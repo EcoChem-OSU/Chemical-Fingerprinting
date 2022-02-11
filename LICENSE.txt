@@ -1,0 +1,33 @@
+Chemical Fingerprinting Workflow Software by Gerrad Jones
+
+Copyright 2022 Oregon State University. All rights reserved.
+
+License Notice:
+
+The Chemical Fingerprinting Workflow Software found in this GitHub 
+repository (the "Software") may be freely used for educational 
+and research purposes by non-profit institutions and United States
+Federal Government agencies only. Other organizations are allowed
+to use the Software for evaluation purposes only. Any further uses
+will require prior approval, and the Software may not be sold or
+redistributed without prior approval.  Portions of this Software
+are also subject to pending patents, with rights available from
+Oregon State University on request to advantage@oregonstate.edu.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE 
+OR OTHER DEALINGS IN THE SOFTWARE.
+
+By downloading, compiling or executing any part of this Software 
+constitutes your agreement to these terms.
+ 
+---
+GitHub Repository: https://github.com/EcoChem-OSU
+Software Disclosure References: OSU-19-31; OSU-22-02
+
+#eof#
