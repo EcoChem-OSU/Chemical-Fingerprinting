@@ -120,12 +120,12 @@ def train_test_split_grouped(X, y, test_size_tuning):
     mask = y>0
     X_trainpos, X_testpos, y_trainpos, y_testpos = train_test_split(X[mask], y[mask], test_size=test_size_tuning,random_state=None,shuffle=True)    
     X_trainneg, X_testneg, y_trainneg, y_testneg = train_test_split(X[np.invert(mask)], y[np.invert(mask)], test_size=test_size_tuning,random_state=None,shuffle=True)
-    X_train = np.concatenate((X_trainneg, X_trainpos))
 
     #Concatenate testing and training groups
+    X_train = np.concatenate((X_trainneg, X_trainpos))
     X_test = np.concatenate((X_testneg, X_testpos))
     y_train = np.concatenate((y_trainneg, y_trainpos))
-    y_test = np.concatenate((y_testpos, y_testneg))
+    y_test = np.concatenate((y_testneg, y_testpos))
     
     return X_train, X_test, y_train, y_test
 
@@ -445,15 +445,14 @@ def Classifier2(algorithm, hyperparameter_value, X_train, X_test, y_train, y_tes
         estimator.fit(X_train,y_train)
         #predicted y data based on the modeled X_train data
         y_train_pred = estimator.predict(X_train)
-        print("ypred")
-        print(y_train_pred)
         #predicted y data based on the modeled X_test data
-        y_test_pred = estimator.predict(X_test)                                   
+        y_test_pred = estimator.predict(X_test)                            
         ########################################################################
         #Evaluate the performance of the model for the training data
         ########################################################################
         #the confusion matrix identifies the true positive ([0,0]), true negative ([1,1]), false positive ([0,1]), and false negative ([1,0])
         train_matrix = confusion_matrix(y_train, y_train_pred)
+        print("train matrix: ",train_matrix)
         #identifies the percentage of ture positives
         True_pos_train = train_matrix[1,1]
         #identifies the percentage of false negatives
@@ -469,7 +468,8 @@ def Classifier2(algorithm, hyperparameter_value, X_train, X_test, y_train, y_tes
         #Evaluate the performance of the model for the testing data
         ########################################################################
         #same as above, but for testing data
-        test_matrix = confusion_matrix(y_test, y_test_pred)           
+        test_matrix = confusion_matrix(y_test, y_test_pred)    
+        print("\ny test: ", y_test, "\ny pred: ", y_test_pred)
         #identifies the percentage of ture positives
         True_pos_test = test_matrix[1,1]
         #identifies the percentage of false negatives
@@ -525,103 +525,8 @@ def model_printout(algorithm, hyperparameter_value, avg_score):
         print("     Averaged Balanced Accuracy of the Testing data = ", np.round(avg_score,2))       
         
         
-#execute the model. This script selects hyper parameters, performs train test split, calculated balanced accuracy, and generates model outputs to be used later 
-def model_execute(algorithm, X, y, X_mixtures, n_combos, n_rs, test_size_tuning, hyperParameterConstraints):
-    i = 0 
-    results = misc_ml_storing_parameters(algorithm, n_combos)
-    
-    #set domain of relevant tuning parameters
-    hyperparameter_domain = set_hyperparameter_domain(algorithm, hyperParameterConstraints)
-
-    #select tuning parameter value
-    hyperparameter_value = set_hyperparameter_value(algorithm, hyperparameter_domain)
-    
-    #Iterate n times
-    while i < n_combos:                                                                         
-    #Classifier requires tuning of different parameters.
-    #Pick a random hyper-parameter value within the defined range
-
-        #Create empty arrays to store balanced accuracy
-        metric_score = np.zeros(n_rs)
-        
-        print("Iteration:", i+1, "of", n_combos)
-        start = timeit.default_timer()
-        try:
-            #Iterate through each random state value
-            for u in range(0,n_rs):
-
-                # apply train test split
-                #Randomly split training and testing data. However, each combination will have the same train/test split based on random_state=rand_s[u]
-                #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size_tuning,random_state=None,shuffle=True)
-                X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size_tuning)
-                #The Classifier fits the training and testing datastudent be supervised by a 
-                estimator = Classifier(algorithm, hyperparameter_value)
-                estimator.fit(X_train,y_train)
-                #predicted y data based on the modeled X_train data
-                y_train_pred = estimator.predict(X_train)
-                #predicted y data based on the modeled X_test data
-                y_test_pred = estimator.predict(X_test)                                   
-                ########################################################################
-                #Evaluate the performance of the model for the training data
-                ########################################################################
-                #the confusion matrix identifies the true positive ([0,0]), true negative ([1,1]), false positive ([0,1]), and false negative ([1,0])
-                train_matrix = confusion_matrix(y_train, y_train_pred)
-                #identifies the percentage of ture positives
-                True_pos_train = train_matrix[1,1]
-                #identifies the percentage of false negatives
-                False_neg_train = train_matrix[1,0]
-                #identifies the percentage of true negatives
-                True_neg_train = train_matrix[0,0]
-                #identifies the percentage of false positives
-                False_pos_train = train_matrix[0,1]
-
-                TrainAccuracy = 0.5*(True_pos_train/(True_pos_train+False_neg_train)+True_neg_train/(True_neg_train+False_pos_train))
-
-                #######################################################################
-                #Evaluate the performance of the model for the testing data
-                ########################################################################
-                #same as above, but for testing data
-                test_matrix = confusion_matrix(y_test, y_test_pred)           
-                #identifies the percentage of ture positives
-                True_pos_test = test_matrix[1,1]
-                #identifies the percentage of false negatives
-                False_neg_test = test_matrix[1,0]
-                #identifies the percentage of true negatives
-                True_neg_test = test_matrix[0,0]
-                #identifies the percentage of false positives
-                False_pos_test = test_matrix[0,1]
-
-                TestAccuracy = 0.5*(True_pos_test/(True_pos_test+False_neg_test)+True_neg_test/(True_neg_test+False_pos_test))
-
-                ########################################################################
-                #Classifier outputs
-                ########################################################################
-                #save probability of group membership
-                proba_ = estimator.predict_proba(X)
-                #save probabilities of group membership for mixture samples
-                Mix_proba_ = estimator.predict_proba(X_mixtures)
-                #predict group membership for all samples (not just test train splits)
-                pred_all = estimator.predict(X)
-                #Apply metric score to evaluate overfitting
-                metric_score[u] = test_metric(TrainAccuracy,TestAccuracy)
-    
-        except:
-            #Especially for sources with few samples, there is a chance that the training dataset has only one group (only absences are present). This will throw an error. THe try/except statment was included to prevent the script from stopping.
-            print('     Error: Rerunning...')
-            
-        #Calculate the average metric score...sometimes, the metric score is nan (unsure why), so nanmean is used to ignore these "values" 
-        avg_score = np.nanmean(metric_score)
-        #Store average metric score and corresponding params  
-        results.results[:,i] = np.array([avg_score,hyperparameter_value])
-        model_printout(algorithm, hyperparameter_value, avg_score)
-        stop = timeit.default_timer() 
-        print("     Time = ", np.round(stop - start, decimals = 0), "seconds")
-        i = i+1
-           
-    return (results)   
 
 #TESTING
-
 #execute the model. This script selects hyper parameters, performs train test split, calculated balanced accuracy, and generates model outputs to be used later 
 def model_execute2(algorithm, X, y, X_mixtures, n_combos, n_rs, test_size_tuning, hyperParameterConstraints, hyperparameter_domain, verbose):
     i = 0 
@@ -650,7 +555,7 @@ def model_execute2(algorithm, X, y, X_mixtures, n_combos, n_rs, test_size_tuning
             #Randomly split training and testing data. However, each combination will have the same train/test split based on random_state=rand_s[u]
             #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size_tuning,random_state=None,shuffle=True)
             X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size_tuning)
-
+            #print("X_train: ", X_train, "\nX_test: ",X_test,"\ny_train: ",y_train,"\ny_test: ", y_test)
             #The Classifier fits the training and testing datastudent be supervised by a 
             y_test_pred, TrainAccuracy, TestAccuracy, coef_, proba_, Mix_proba_, pred_all = Classifier2(algorithm, hyperparameter_value, X_train, X_test, y_train, y_test, X, X_mixtures)
             #Apply metric score to evaluate overfitting
@@ -773,49 +678,7 @@ def importance(algorithm, X, y, X_mixtures, test_size, importance_iterations, hy
                 X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size)
                 #execute the Classifier_CV_Imp function                              
                 #estimator = Classifier2
-                estimator = Classifier (algorithm, hyperparameter_top)
-                estimator.fit(X_train,y_train)
-                y_train_pred = estimator.predict(X_train) 
-                y_test_pred = estimator.predict(X_test)
-
-                ########################################################################
-                #Evaluate the performance of the model for the training data
-                ########################################################################
-                #the confusion matrix identifies the true positive ([0,0]), true negative ([1,1]), false positive ([0,1]), and false negative ([1,0])
-                train_matrix = confusion_matrix(y_train, y_train_pred)
-                #identifies the percentage of ture positives
-                True_pos_train = train_matrix[1,1]
-                #identifies the percentage of false negatives
-                False_neg_train = train_matrix[1,0]
-
-                #identifies the percentage of ture negatives
-                True_neg_train = train_matrix[0,0]
-                #identifies the percentage of false positives
-                False_pos_train = train_matrix[0,1]                           
-
-                TrainAccuracy = 0.5*(True_pos_train/(True_pos_train+False_neg_train)+True_neg_train/(True_neg_train+False_pos_train))
-
-                #######################################################################
-                #Evaluate the performance of the model for the testing data
-                ########################################################################
-
-                test_matrix = confusion_matrix(y_test, y_test_pred)
-
-                True_pos_test = test_matrix[1,1]
-                False_neg_test = test_matrix[1,0]
-
-                True_neg_test = test_matrix[0,0]
-                False_pos_test = test_matrix[0,1]
-
-                TestAccuracy = 0.5*(True_pos_test/(True_pos_test+False_neg_test)+True_neg_test/(True_neg_test+False_pos_test))
-
-                ########################################################################
-                #Classifier outputs
-                ########################################################################
-                proba_ = estimator.predict_proba(X)
-                Mix_proba_ = estimator.predict_proba(X_mixtures)
-                pred_all = estimator.predict(X)
-                coef_ = estimator.coef_
+                y_test_pred, TrainAccuracy, TestAccuracy, coef_, proba_, Mix_proba_, pred_all = Classifier2(algorithm, hyperparameter_top, X_train, X_test, y_train, y_test, X, X_mixtures)
 
                 if TrainAccuracy <= 0.5 or TestAccuracy <= 0.5:
                     stop = timeit.default_timer() 
@@ -1144,7 +1007,7 @@ def diagnostic_rerun(algorithm, IDName, X, y, X_mixtures, test_size, final_itera
                 X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size)
                 
                 #execute the Classifier_CV_Imp function                              
-                estimator = Classifier2(algorithm, hyperparameter_top)
+                estimator = Classifier2(algorithm, hyperparameter_top, X_train, X_test, y_train, y_test, X, X_mixtures)
                 #estimator = Classifier2
                 estimator.fit(X_train,y_train)
                 y_train_pred = estimator.predict(X_train) 
@@ -1270,72 +1133,29 @@ def diagnostic_rerun2(algorithm, IDName, X, y, X_mixtures, test_size, final_iter
     while i < final_iterations:
         #start a timer to keep track of how long each iteration takes
         start = timeit.default_timer()
-        try:
-            if algorithm == "SVC":
-                
-                #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=None)
-                X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size)
-                #execute the Classifier_CV_Imp function                              
-                estimator = Classifier2(algorithm, hyperparameter_top)
-                #estimator = Classifier2
-                estimator.fit(X_train,y_train)
-                y_train_pred = estimator.predict(X_train) 
-                y_test_pred = estimator.predict(X_test)
+        #try:
+        if algorithm == "SVC":
+            
+            #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=None)
+            X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size)
+            #execute the Classifier_CV_Imp function                              
+            y_test_pred, TrainAccuracy, TestAccuracy, coef_, proba_, Mix_proba_, pred_all = Classifier2(algorithm, hyperparameter_top, X_train, X_test, y_train, y_test, X, X_mixtures)
 
-                ########################################################################
-                #Evaluate the performance of the model for the training data
-                ########################################################################
-                #the confusion matrix identifies the true positive ([0,0]), true negative ([1,1]), false positive ([0,1]), and false negative ([1,0])
-                train_matrix = confusion_matrix(y_train, y_train_pred)
-
-                #identifies the percentage of ture positives
-                True_pos_train = train_matrix[1,1]
-                #identifies the percentage of false negatives
-                False_neg_train = train_matrix[1,0]
-                #identifies the percentage of ture negatives
-                True_neg_train = train_matrix[0,0]
-                #identifies the percentage of false positives
-                False_pos_train = train_matrix[0,1]
-
-                TrainAccuracy = 0.5*(True_pos_train/(True_pos_train+False_neg_train)+True_neg_train/(True_neg_train+False_pos_train))
-
-                #######################################################################
-                #Evaluate the performance of the model for the testing data
-                ########################################################################
-
-                test_matrix = confusion_matrix(y_test, y_test_pred)
-
-                True_pos_test = test_matrix[1,1]
-                False_neg_test = test_matrix[1,0]
-
-                True_neg_test = test_matrix[0,0]
-                False_pos_test = test_matrix[0,1]
-
-                TestAccuracy = 0.5*(True_pos_test/(True_pos_test+False_neg_test)+True_neg_test/(True_neg_test+False_pos_test))
-
-                ########################################################################
-                #Classifier outputs
-                ########################################################################
-                proba_ = estimator.predict_proba(X)
-                Mix_proba_ = estimator.predict_proba(X_mixtures)
-                pred_all = estimator.predict(X)
-                coef_ = estimator.coef_
-
-                proba_known [:,:,i] = proba_
-                proba_mix [:,:,i] = Mix_proba_
-                pred_known [:,i] = pred_all
-               #stop iteration timer
-                stop = timeit.default_timer()
-                print("Iteration:", i+1, "of", final_iterations)
-                print("     Balanced Training Accuracy: ", np.round(TrainAccuracy,2))
-                print("     Balanced Testing Accuracy:  ", np.round(TestAccuracy,2))
-                print("     Time = ", np.round(stop - start, decimals = 0), "seconds")
-                print()
-                test_pred[:,i] = y_test_pred
-                test_actual[:,i] = y_test
-                i = i+1
-        except:
-            print('Error: Rerunning...')
+            proba_known [:,:,i] = proba_
+            proba_mix [:,:,i] = Mix_proba_
+            pred_known [:,i] = pred_all
+           #stop iteration timer
+            stop = timeit.default_timer()
+            print("Iteration:", i+1, "of", final_iterations)
+            print("     Balanced Training Accuracy: ", np.round(TrainAccuracy,2))
+            print("     Balanced Testing Accuracy:  ", np.round(TestAccuracy,2))
+            print("     Time = ", np.round(stop - start, decimals = 0), "seconds")
+            print()
+            test_pred[:,i] = y_test_pred
+            test_actual[:,i] = y_test
+            i = i+1
+        #except:
+            #print('Error: Rerunning...')
     
     for i in range(0,len(y),1):
         for j in range (0,2,1):

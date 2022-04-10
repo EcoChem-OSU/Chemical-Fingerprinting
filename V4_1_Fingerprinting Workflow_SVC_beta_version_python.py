@@ -74,33 +74,32 @@ def fingerprintingWorkflow(IDLabel: list, algorithm: str, verbose: bool = True, 
     from SVC_Classification import SVC_Classification
     from RF_Classification import RF_Classification
     from V4_1_Fingerprinting_functions import selectFolder
-    from v4_1_Fingerprinting_functions import testFingerprintFilePaths
-    from v4_1_Fingerprinting_functions import generateTestingParameters
-    from v4_1_Fingerprinting_functions import generateSVCParameters
-    from v4_1_Fingerprinting_functions import importFingerprintData
-    from v4_1_Fingerprinting_functions import misc_ml_storing_parameters
-    from v4_1_Fingerprinting_functions import set_hyperparameter_domain
-    from v4_1_Fingerprinting_functions import set_hyperparameter_value
-    from v4_1_Fingerprinting_functions import Classifier
-    from v4_1_Fingerprinting_functions import Classifier2
-    from v4_1_Fingerprinting_functions import test_metric
-    from v4_1_Fingerprinting_functions import model_printout
-    from v4_1_Fingerprinting_functions import model_execute
-    from v4_1_Fingerprinting_functions import model_execute2
-    from v4_1_Fingerprinting_functions import model_results
-    from v4_1_Fingerprinting_functions import plot_results
-    from v4_1_Fingerprinting_functions import Norm_Importance
-    from v4_1_Fingerprinting_functions import importance
-    from v4_1_Fingerprinting_functions import saving_plotting_imp
-    from v4_1_Fingerprinting_functions import retuning
-    from v4_1_Fingerprinting_functions import retuning2
-    from v4_1_Fingerprinting_functions import diagnostic_rerun
-    from v4_1_Fingerprinting_functions import final_plots
-    from v4_1_Fingerprinting_functions import fingerprintParametersClass
-    from v4_1_Fingerprinting_functions import storingParametersClass
-    from v4_1_Fingerprinting_functions import modeledResultsClass
-    from v4_1_Fingerprinting_functions import importanceMetricsClass
-    from v4_1_Fingerprinting_functions import createFolderPath
+    from V4_1_Fingerprinting_functions import testFingerprintFilePaths
+    from V4_1_Fingerprinting_functions import generateTestingParameters
+    from V4_1_Fingerprinting_functions import generateSVCParameters
+    from V4_1_Fingerprinting_functions import importFingerprintData
+    from V4_1_Fingerprinting_functions import misc_ml_storing_parameters
+    from V4_1_Fingerprinting_functions import set_hyperparameter_domain
+    from V4_1_Fingerprinting_functions import set_hyperparameter_value
+    from V4_1_Fingerprinting_functions import Classifier
+    from V4_1_Fingerprinting_functions import Classifier2
+    from V4_1_Fingerprinting_functions import test_metric
+    from V4_1_Fingerprinting_functions import model_printout
+    from V4_1_Fingerprinting_functions import model_execute2
+    from V4_1_Fingerprinting_functions import model_results
+    from V4_1_Fingerprinting_functions import plot_results
+    from V4_1_Fingerprinting_functions import Norm_Importance
+    from V4_1_Fingerprinting_functions import importance
+    from V4_1_Fingerprinting_functions import saving_plotting_imp
+    from V4_1_Fingerprinting_functions import retuning
+    from V4_1_Fingerprinting_functions import retuning2
+    from V4_1_Fingerprinting_functions import diagnostic_rerun2
+    from V4_1_Fingerprinting_functions import final_plots
+    from V4_1_Fingerprinting_functions import fingerprintParametersClass
+    from V4_1_Fingerprinting_functions import storingParametersClass
+    from V4_1_Fingerprinting_functions import modeledResultsClass
+    from V4_1_Fingerprinting_functions import importanceMetricsClass
+    from V4_1_Fingerprinting_functions import createFolderPath
     
     #Have user select folder if sourceDirectory is not provided
     if(sourceDirectory == None):

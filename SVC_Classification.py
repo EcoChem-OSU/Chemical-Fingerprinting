@@ -1,17 +1,19 @@
 def SVC_Classification(IDLabel, algorithm, verbose, parameters, algorithmParameters, X, X_mixtures, y, dummy, featureIndex, sourceDirectory):
-    from V4_Fingerprinting_functions import set_hyperparameter_domain
-    from V4_Fingerprinting_functions import set_hyperparameter_value
-    from V4_Fingerprinting_functions import Classifier
-    from V4_Fingerprinting_functions import Classifier2
-    from V4_Fingerprinting_functions import misc_ml_storing_parameters
-    from V4_Fingerprinting_functions import model_execute2
-    from V4_Fingerprinting_functions import model_results
-    from V4_Fingerprinting_functions import plot_results
-    from V4_Fingerprinting_functions import importance
-    from V4_Fingerprinting_functions import saving_plotting_imp
-    from V4_Fingerprinting_functions import diagnostic_rerun
-    from V4_Fingerprinting_functions import final_plots
-    from V4_Fingerprinting_functions import generateSVCParameters
+    from V4_1_Fingerprinting_functions import set_hyperparameter_domain
+    from V4_1_Fingerprinting_functions import set_hyperparameter_value
+    from V4_1_Fingerprinting_functions import Classifier
+    from V4_1_Fingerprinting_functions import Classifier2
+    from V4_1_Fingerprinting_functions import misc_ml_storing_parameters
+    from V4_1_Fingerprinting_functions import model_execute2
+    from V4_1_Fingerprinting_functions import model_results
+    from V4_1_Fingerprinting_functions import plot_results
+    from V4_1_Fingerprinting_functions import importance
+    from V4_1_Fingerprinting_functions import saving_plotting_imp
+    from V4_1_Fingerprinting_functions import diagnostic_rerun2
+    from V4_1_Fingerprinting_functions import final_plots
+    from V4_1_Fingerprinting_functions import generateSVCParameters
+    from sklearn.model_selection import GroupShuffleSplit
+    import numpy as np
 
     SourceID = 0
     hyperParameterConstraints = generateSVCParameters(algorithmParameters)
@@ -31,6 +33,7 @@ def SVC_Classification(IDLabel, algorithm, verbose, parameters, algorithmParamet
         
         #Set y dataset using sourceID
         y_dummy = dummy.iloc[:,SourceID]
+        
         #Print dummy information if verbose is on.
         if (verbose == True):
             print("\nSource Name:" + IDName)
@@ -40,7 +43,9 @@ def SVC_Classification(IDLabel, algorithm, verbose, parameters, algorithmParamet
             pass
         
         #Define test size based on test_size parameter.
-        test_size_tuning = int(round(len(y_dummy)*parameters.test_size,0))  
+        #test_size_tuning = int(round(len(y_dummy)*parameters.test_size,0))  
+        test_size_tuning = parameters.test_size  
+    
     
         #Generate empty numpy array for modeling, currently array not in use.
         storingParameters = misc_ml_storing_parameters(algorithm, parameters.n_combos)
@@ -89,7 +94,9 @@ def SVC_Classification(IDLabel, algorithm, verbose, parameters, algorithmParamet
         X_mixtures_Retuning = X_mixtures_Retuning[2:,0:parameters.num_features]                          
     
         #transforming the test size into an integer for train-test split
-        test_size_retuning = int(round(len(y)*parameters.test_size,0))
+        #test_size_retuning = int(round(len(y)*parameters.test_size,0))
+        test_size_retuning = parameters.test_size
+         
          
         #Retune the model with only the n most important features   
         #retunedResults = retuning2(algorithm, y_dummy, parameters.test_size, parameters.n_combos, parameters.n_rs, parameters.num_features, ForSorting, ForSortingMix, modeledResults.hyperParameterTop, hyperParameterConstraints, hyperparameter_domain)
@@ -104,7 +111,7 @@ def SVC_Classification(IDLabel, algorithm, verbose, parameters, algorithmParamet
         #Rerunning
         #TESTING
         #mean_pred_all, mean_proba_known, test_actual, test_pred = diagnostic_rerun(algorithm, IDName, X_Retuning, y_dummy, X_mixtures_Retuning, parameters.test_size, parameters.final_iterations, modeledResults.hyperParameterTop)
-        mean_pred_all, mean_proba_known, test_actual, test_pred = diagnostic_rerun(algorithm, IDName, X_Retuning, y_dummy, X_mixtures_Retuning, parameters.test_size, parameters.final_iterations, retunedModeledResults.hyperParameterTop)
+        mean_pred_all, mean_proba_known, test_actual, test_pred = diagnostic_rerun2(algorithm, IDName, X_Retuning, y_dummy, X_mixtures_Retuning, parameters.test_size, parameters.final_iterations, retunedModeledResults.hyperParameterTop)
         final_plots(y_dummy, IDName, mean_proba_known, test_actual, test_pred)
         
         #Itterate ID Source
