@@ -91,8 +91,6 @@ def fingerprintingWorkflow(IDLabel: list, algorithm: str, verbose: bool = True, 
     from V4_1_Fingerprinting_functions import Norm_Importance
     from V4_1_Fingerprinting_functions import importance
     from V4_1_Fingerprinting_functions import saving_plotting_imp
-    from V4_1_Fingerprinting_functions import retuning
-    from V4_1_Fingerprinting_functions import retuning2
     from V4_1_Fingerprinting_functions import diagnostic_rerun2
     from V4_1_Fingerprinting_functions import final_plots
     from V4_1_Fingerprinting_functions import fingerprintParametersClass
