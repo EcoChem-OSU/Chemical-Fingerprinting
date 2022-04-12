@@ -806,7 +806,7 @@ def diagnostic_rerun2(algorithm, IDName, X, y, X_mixtures, test_size, final_iter
         if algorithm == "SVC":
             
             #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=None)
-            X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size)
+            X_train, X_test, y_train, y_test = train_test_split_grouped(X, y, test_size, test_size_retuning)
             #execute the Classifier_CV_Imp function                              
             y_test_pred, TrainAccuracy, TestAccuracy, coef_, proba_, Mix_proba_, pred_all = Classifier2(algorithm, hyperparameter_top, X_train, X_test, y_train, y_test, X, X_mixtures)
 
