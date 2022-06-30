@@ -1,7 +1,7 @@
 class fingerprintRFParametersClass:
     def __init__(self, setup):
 
-        #Sets Default testing parameters for the fingerprint function.
+        #Sets Default testing parameters for the fingerprint function. 
         if(type(setup) == str):
             setup = setup.lower()
         else:
