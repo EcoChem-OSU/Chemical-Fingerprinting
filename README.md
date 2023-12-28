@@ -1,7 +1,9 @@
 # Python script for Chemical Fingerprinting analysis 
 -----------------------------------------------------------------------------------
+
 Description
 -----------
+
 
 Installation
 ----------------
