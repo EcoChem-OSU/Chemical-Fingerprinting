@@ -7,6 +7,9 @@ Machine learning script develloped in python to identify chemical fingerprinting
 Getting started
 ----------------
 
+Select exemples use of the code
+----------------
+Joseph, N. T.; Schwichtenberg, T.; Cao, D.; Jones, G. D.; Rodowa, A. E.; Barlaz, M. A.; Charbonnet, J. A.; Higgins, C. P.; Field, J. A.; Helbling, D. E. Target and suspect screening integrated with machine learning to discover Per- and Polyfluoroalkyl substance source fingerprints. Environ. Sci. Technol. 2023. DOI: 10.1021/acs.est.3c03770 
 
 Citing
 -------
