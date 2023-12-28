@@ -2,7 +2,7 @@
 -----------------------------------------------------------------------------------
 Description
 -----------
-Machine learning script develloped in python to identify chemical fingerprinting using high-resolution mass spectrometry data.
+Machine learning script develloped in python to identify chemical fingerprinting using non-target high-resolution mass spectrometry data.
 
 Getting started
 ----------------
