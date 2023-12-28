@@ -1,21 +1,12 @@
-# Python script for Chemical Fingerprinting analysis 
+# Machine learning applications for chemical fingerprinting 
 -----------------------------------------------------------------------------------
-
 Description
 -----------
-
-
-Installation
-----------------
-How to you install dependency
+Machine learning script devellop in python to identify chemical fingerprinting using high-resolution mass spectrometry data.
 
 Getting started
 ----------------
-1.
-2.
-3.open tutorial for more help
-4. run script
-5.
+
 
 Citing
 -------
