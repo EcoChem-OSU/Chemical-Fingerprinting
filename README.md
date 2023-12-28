@@ -14,4 +14,11 @@ Davila-Santiago, E.; Shi, C.; Mahadwar, G.; Medeghini, B.; Insinga, L.; Hutchins
 
 License
 -------
+Copyright 2022 Oregon State University. All rights reserved.
 
+License Notice:
+
+The Chemical Fingerprinting Workflow Software found in this GitHub 
+repository (the "Software") may be freely used for educational 
+and research purposes by non-profit institutions and United States
+Federal Government agencies only. See license for more detail.
